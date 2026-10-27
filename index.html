@@ -126,6 +126,22 @@
   .et .e2{font-family:var(--mono);font-weight:600;margin-top:1.2mm;letter-spacing:.3px;color:#13213A}
   .et .e3{font-size:6.5pt;color:#444;line-height:1.15;margin-top:.6mm;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 
+  /* Etiquetas en rollo (impresora térmica) */
+  .hojaEt.rollo{background:transparent;border:0;padding:0;max-width:none;display:flex;flex-direction:column;align-items:center;gap:5mm}
+  .pagEt{display:grid;background:#fff;outline:1px dashed #AEB8CC;box-shadow:0 2px 10px rgba(19,33,58,.12);overflow:hidden;box-sizing:border-box}
+  .etR{box-sizing:border-box;overflow:hidden;display:flex;align-items:center;justify-content:center;color:#000;background:#fff}
+  .etR.h{flex-direction:row;text-align:left}
+  .etR.v{flex-direction:column;text-align:center}
+  .etR .qrR img,.etR .qrR canvas{display:block;width:100%!important;height:100%!important;image-rendering:pixelated}
+  .etR .qrR canvas{display:none!important}
+  .etR .qrR{flex:none}
+  .etR .txtR{min-width:0;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+  .etR .lR{display:block;max-width:100%;height:auto;object-fit:contain}
+  .etR .cR{font-family:var(--mono);font-weight:700;line-height:1.05;white-space:nowrap;color:#000}
+  .etR .dR{line-height:1.12;color:#000;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+  .medidas{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-items:end}
+  @media (max-width:820px){ .medidas{grid-template-columns:1fr 1fr} }
+
   @media (max-width:820px){
     .kpis{grid-template-columns:repeat(2,1fr)}
     .filtros{grid-template-columns:1fr 1fr}
@@ -140,14 +156,17 @@
     nav.tabs button{padding:12px 10px}
   }
   @media print{
-    @page{size:letter;margin:8mm}
     body{background:#fff}
-    body *{visibility:hidden}
-    #hojaEt,#hojaEt *{visibility:visible}
-    #hojaEt{position:absolute;left:0;top:0;border:0;padding:0;max-width:none}
+    header.barra,nav.tabs,.aviso,.noImp{display:none!important}
+    main{padding:0;margin:0;max-width:none}
+    .hojaEt{border:0;padding:0;max-width:none;border-radius:0}
     .et{border-color:#999;border-top-color:#E11B22;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .hojaEt.rollo{display:block;gap:0}
+    .pagEt{box-shadow:none!important;outline:none!important;margin:0!important;break-after:page;page-break-after:always}
+    .pagEt:last-child{break-after:auto;page-break-after:auto}
   }
 </style>
+<style id="estiloPagina">@page{size:letter;margin:8mm}</style>
 </head>
 <body>
 <header class="barra">
@@ -252,7 +271,7 @@ async function srv(fn, ...args){
 }
 
 /** Toda pantalla nueva pasa por aquí: apaga la cámara si estaba encendida. */
-function pintar(html){ pararCamara(); app.innerHTML = html; }
+function pintar(html){ pararCamara(); tamPagina('@page{size:letter;margin:8mm}'); app.innerHTML = html; }
 
 function aviso(msg, tipo){
   const a = $('#aviso'); a.textContent = msg; a.className = 'aviso ' + (tipo || ''); a.hidden = false;
@@ -688,52 +707,148 @@ function verFormActivo(a){
   };
 }
 
-/* ------------------------------------------------------------- Etiquetas QR en tamaño carta */
+/* ------------------------------------------------------------- Etiquetas QR: hoja carta o rollo de etiquetas */
 
 const TAM = {
   pequena: { cols:4, nombre:'Pequeña · 4 por fila', cod:'8pt' },
   mediana: { cols:3, nombre:'Mediana · 3 por fila', cod:'9.5pt' },
   grande:  { cols:2, nombre:'Grande · 2 por fila', cod:'12pt' }
 };
+/* Medidas comunes de rollos de etiquetas (ancho × alto en mm) */
+const MEDIDAS = [[50,25],[50,30],[40,30],[60,40],[70,50],[80,50],[100,50],[100,100]];
+const ET_DEF = { hoja:'rollo', tam:'mediana', desc:true, logo:true, ancho:50, alto:30, cols:1, sep:2 };
+
+function leerPrefEt(){ try { return Object.assign({}, ET_DEF, JSON.parse(localStorage.getItem('ca_et') || '{}')); } catch(e){ return Object.assign({}, ET_DEF); } }
+function guardarPrefEt(p){ try { localStorage.setItem('ca_et', JSON.stringify(p)); } catch(e){} }
+function tamPagina(css){ const s = document.getElementById('estiloPagina'); if (s) s.textContent = css; }
 
 async function verEtiquetas(codigos){
   cargando('Preparando etiquetas…');
   let d;
   try { d = await srv('etiquetas', S.token, codigos); } catch(err){ aviso(err.message, 'error'); return verActivos(); }
-  let tam = 'mediana', desc = true;
+  const P = leerPrefEt();
   const sinQR = d.items.filter(i => !i.token).map(i => i.codigo);
+  const items = d.items.filter(i => i.token);
+  const medidaSel = () => MEDIDAS.some(([w, h]) => w === P.ancho && h === P.alto) ? P.ancho + 'x' + P.alto : 'otra';
   pintar(`
-    <div class="entre">
-      <div><h1>Etiquetas QR</h1><div class="muted">${d.items.length} ${d.items.length === 1 ? 'etiqueta' : 'etiquetas'} · hoja tamaño carta</div></div>
+    <div class="entre noImp">
+      <div><h1>Etiquetas QR</h1><div class="muted" id="eSub"></div></div>
       <div class="fila">
-        <select id="eTam" style="width:auto">${Object.entries(TAM).map(([k, v]) => `<option value="${k}" ${k === tam ? 'selected' : ''}>${v.nombre}</option>`).join('')}</select>
-        <label class="fila" style="gap:6px;font-size:14px"><input type="checkbox" id="eDesc" checked> Descripción</label>
         <button class="btn" id="eVolver">Volver</button>
         <button class="btn pri" id="eImp">Imprimir</button>
       </div>
     </div>
-    ${d.url ? '' : '<div class="nota" style="margin-bottom:12px">Falta la URL de la aplicación en la hoja Parámetros. Sin ella los QR no abrirán la ficha.</div>'}
-    ${sinQR.length ? `<div class="nota" style="margin-bottom:12px">Todavía sin QR (se omiten): ${sinQR.map(esc).join(', ')}. Vuelva a intentarlo en unos segundos.</div>` : ''}
-    <div class="hojaEt" id="hojaEt"><div class="gridEt" id="gridEt"></div></div>
-    <p class="muted mt" style="font-size:13px;text-align:center">En el diálogo de impresión elija tamaño Carta y escala 100 %. Las líneas punteadas son guías de corte.</p>`);
-  const dibujar = () => {
-    const t = TAM[tam];
-    const g = $('#gridEt');
-    g.style.gridTemplateColumns = `repeat(${t.cols}, 1fr)`;
-    g.innerHTML = d.items.filter(i => i.token).map(i => `
+    <div class="panel noImp" style="margin-bottom:14px">
+      <div class="medidas">
+        <label class="campo">Formato<select id="eHoja">
+          <option value="rollo" ${P.hoja === 'rollo' ? 'selected' : ''}>Rollo de etiquetas (impresora térmica)</option>
+          <option value="carta" ${P.hoja === 'carta' ? 'selected' : ''}>Hoja carta (impresora normal)</option></select></label>
+        <label class="campo soloCarta">Tamaño en la hoja<select id="eTam">${Object.entries(TAM).map(([k, v]) => `<option value="${k}" ${k === P.tam ? 'selected' : ''}>${v.nombre}</option>`).join('')}</select></label>
+        <label class="campo soloRollo">Medida de la etiqueta<select id="eMed">${MEDIDAS.map(([w, h]) => `<option value="${w}x${h}">${w} × ${h} mm</option>`).join('')}<option value="otra">Otra medida…</option></select></label>
+        <label class="campo soloRollo">Ancho (mm)<input type="number" id="eAn" min="15" max="104" step="0.5" value="${P.ancho}"></label>
+        <label class="campo soloRollo">Alto (mm)<input type="number" id="eAl" min="10" max="200" step="0.5" value="${P.alto}"></label>
+        <label class="campo soloRollo">Etiquetas por fila del rollo<select id="eCols">${[1,2,3].map(n => `<option ${n === P.cols ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
+        <label class="campo soloRollo" id="lSep">Separación entre columnas (mm)<input type="number" id="eSep" min="0" max="10" step="0.5" value="${P.sep}"></label>
+        <label class="fila" style="gap:6px;font-size:14px"><input type="checkbox" id="eDesc" ${P.desc ? 'checked' : ''}> Descripción</label>
+        <label class="fila" style="gap:6px;font-size:14px"><input type="checkbox" id="eLogo" ${P.logo ? 'checked' : ''}> Logotipo</label>
+      </div>
+    </div>
+    ${d.url ? '' : '<div class="nota noImp" style="margin-bottom:12px">Falta la URL de la aplicación en la hoja Parámetros. Sin ella los QR no abrirán la ficha.</div>'}
+    ${sinQR.length ? `<div class="nota noImp" style="margin-bottom:12px">Todavía sin QR (se omiten): ${sinQR.map(esc).join(', ')}. Vuelva a intentarlo en unos segundos.</div>` : ''}
+    <div class="hojaEt" id="hojaEt"></div>
+    <div class="nota ok mt noImp" id="eAyuda" style="font-size:13px"></div>`);
+  $('#eMed').value = medidaSel();
+
+  const qr = el => new QRCode(el, { text: enlaceQR(d.url, el.dataset.t), width: 400, height: 400, correctLevel: QRCode.CorrectLevel.M });
+
+  const dibujarCarta = () => {
+    const t = TAM[P.tam];
+    tamPagina('@page{size:letter;margin:8mm}');
+    const hoja = $('#hojaEt'); hoja.className = 'hojaEt';
+    hoja.innerHTML = `<div class="gridEt" style="grid-template-columns:repeat(${t.cols}, 1fr)">${items.map(i => `
       <div class="et">
-        ${LOGO ? `<img class="elogo" src="${LOGO}" alt="">` : ''}
+        ${P.logo && LOGO ? `<img class="elogo" src="${LOGO}" alt="">` : ''}
         <div class="qr" data-t="${esc(i.token)}" style="width:${t.cols === 4 ? 70 : t.cols === 3 ? 72 : 62}%"></div>
         <div class="e2" style="font-size:${t.cod}">${esc(i.codigo)}</div>
-        ${desc ? `<div class="e3">${esc(i.descripcion)}</div>` : ''}
-      </div>`).join('');
-    g.querySelectorAll('.qr').forEach(el => {
-      new QRCode(el, { text: enlaceQR(d.url, el.dataset.t), width: 300, height: 300, correctLevel: QRCode.CorrectLevel.M });
-    });
+        ${P.desc ? `<div class="e3">${esc(i.descripcion)}</div>` : ''}
+      </div>`).join('')}</div>`;
+    hoja.querySelectorAll('.qr').forEach(qr);
+    $('#eSub').textContent = `${items.length} ${items.length === 1 ? 'etiqueta' : 'etiquetas'} · hoja tamaño carta`;
+    $('#eAyuda').innerHTML = 'En el diálogo de impresión elija <b>tamaño Carta</b> y <b>escala 100 %</b>. Las líneas punteadas son guías de corte.';
   };
-  $('#eTam').onchange = e => { tam = e.target.value; dibujar(); };
-  $('#eDesc').onchange = e => { desc = e.target.checked; dibujar(); };
-  $('#eVolver').onclick = () => codigos.length === 1 ? verFicha(codigos[0]) : verActivos();
+
+  const dibujarRollo = () => {
+    const W = P.ancho, H = P.alto, C = P.cols, G = C > 1 ? P.sep : 0;
+    const PW = +(W * C + G * (C - 1)).toFixed(2);
+    tamPagina(`@page{size:${PW}mm ${H}mm;margin:0}`);
+    const pad = Math.max(1, Math.min(2.5, H * 0.06));
+    const horiz = W >= H * 1.25;
+    let qrMM, codMM, desMM, logoMM, txtW;
+    if (horiz){
+      qrMM = H - pad * 2;
+      txtW = W - qrMM - pad * 3;
+      codMM = Math.max(1.8, Math.min(H * 0.16, txtW / 5.4, 5));
+      desMM = Math.max(1.5, codMM * 0.62);
+      logoMM = Math.min(H * 0.3, txtW * 0.36);
+    } else {
+      const libre = H - pad * 2;
+      codMM = Math.max(1.8, Math.min((W - pad * 2) / 5.4, H * 0.09, 4.5));
+      desMM = Math.max(1.5, codMM * 0.62);
+      logoMM = Math.min(H * 0.12, (W - pad * 2) * 0.2);
+      const usado = codMM * 1.2 + (P.desc ? desMM * 2.4 : 0) + (P.logo && LOGO ? logoMM + 1 : 0);
+      qrMM = Math.max(8, Math.min(W - pad * 2, libre - usado - 1));
+    }
+    const etiqueta = i => horiz ? `
+      <div class="etR h" style="width:${W}mm;height:${H}mm;padding:${pad}mm;gap:${pad}mm">
+        <div class="qrR" data-t="${esc(i.token)}" style="width:${qrMM}mm;height:${qrMM}mm"></div>
+        <div class="txtR" style="width:${txtW}mm;gap:${(H * 0.03).toFixed(2)}mm">
+          ${P.logo && LOGO ? `<img class="lR" src="${LOGO}" alt="" style="max-height:${logoMM}mm">` : ''}
+          <div class="cR" style="font-size:${codMM}mm">${esc(i.codigo)}</div>
+          ${P.desc ? `<div class="dR" style="font-size:${desMM}mm">${esc(i.descripcion)}</div>` : ''}
+        </div>
+      </div>` : `
+      <div class="etR v" style="width:${W}mm;height:${H}mm;padding:${pad}mm;gap:${(H * 0.02).toFixed(2)}mm">
+        ${P.logo && LOGO ? `<img class="lR" src="${LOGO}" alt="" style="max-height:${logoMM}mm;max-width:80%">` : ''}
+        <div class="qrR" data-t="${esc(i.token)}" style="width:${qrMM}mm;height:${qrMM}mm"></div>
+        <div class="cR" style="font-size:${codMM}mm">${esc(i.codigo)}</div>
+        ${P.desc ? `<div class="dR" style="font-size:${desMM}mm">${esc(i.descripcion)}</div>` : ''}
+      </div>`;
+    const paginas = [];
+    for (let k = 0; k < items.length; k += C) paginas.push(items.slice(k, k + C));
+    const hoja = $('#hojaEt'); hoja.className = 'hojaEt rollo';
+    hoja.innerHTML = paginas.map(p => `
+      <div class="pagEt" style="width:${PW}mm;height:${H}mm;grid-template-columns:repeat(${C}, ${W}mm);column-gap:${G}mm">
+        ${p.map(etiqueta).join('')}
+      </div>`).join('');
+    hoja.querySelectorAll('.qrR').forEach(qr);
+    $('#eSub').textContent = `${items.length} ${items.length === 1 ? 'etiqueta' : 'etiquetas'} · rollo de ${W} × ${H} mm` + (C > 1 ? `, ${C} por fila` : '');
+    $('#eAyuda').innerHTML = `En el diálogo de impresión: <b>Destino</b> = la impresora SAT · <b>Tamaño de papel</b> = ${PW} × ${H} mm · <b>Márgenes</b> = Ninguno · <b>Escala</b> = 100 % (o "Ajustar al área de impresión") · desactive <b>Encabezados y pies de página</b>.` +
+      (qrMM < 15 ? '<br><b style="color:var(--oxido)">El QR queda muy pequeño (menos de 15 mm) y puede costar leerlo. Pruebe una etiqueta más grande o quite el logotipo y la descripción.</b>' : '');
+  };
+
+  const dibujar = () => {
+    guardarPrefEt(P);
+    document.querySelectorAll('.soloRollo').forEach(el => el.style.display = P.hoja === 'rollo' ? '' : 'none');
+    document.querySelectorAll('.soloCarta').forEach(el => el.style.display = P.hoja === 'carta' ? '' : 'none');
+    if (P.hoja === 'rollo') $('#lSep').style.display = P.cols > 1 ? '' : 'none';
+    P.hoja === 'rollo' ? dibujarRollo() : dibujarCarta();
+  };
+  const num = (v, min, max, def) => { const n = parseFloat(String(v).replace(',', '.')); return isFinite(n) ? Math.min(max, Math.max(min, n)) : def; };
+
+  $('#eHoja').onchange = e => { P.hoja = e.target.value; dibujar(); };
+  $('#eTam').onchange = e => { P.tam = e.target.value; dibujar(); };
+  $('#eMed').onchange = e => {
+    if (e.target.value !== 'otra'){ const [w, h] = e.target.value.split('x').map(Number); P.ancho = w; P.alto = h; $('#eAn').value = w; $('#eAl').value = h; }
+    else $('#eAn').focus();
+    dibujar();
+  };
+  $('#eAn').onchange = e => { P.ancho = num(e.target.value, 15, 104, 50); e.target.value = P.ancho; $('#eMed').value = medidaSel(); dibujar(); };
+  $('#eAl').onchange = e => { P.alto = num(e.target.value, 10, 200, 30); e.target.value = P.alto; $('#eMed').value = medidaSel(); dibujar(); };
+  $('#eCols').onchange = e => { P.cols = Number(e.target.value); if (P.ancho * P.cols > 104){ aviso('Ojo: ' + P.cols + ' etiquetas de ' + P.ancho + ' mm superan los 104 mm de ancho de la impresora.', 'error'); } dibujar(); };
+  $('#eSep').onchange = e => { P.sep = num(e.target.value, 0, 10, 2); e.target.value = P.sep; dibujar(); };
+  $('#eDesc').onchange = e => { P.desc = e.target.checked; dibujar(); };
+  $('#eLogo').onchange = e => { P.logo = e.target.checked; dibujar(); };
+  $('#eVolver').onclick = () => { tamPagina('@page{size:letter;margin:8mm}'); codigos.length === 1 ? verFicha(codigos[0]) : verActivos(); };
   $('#eImp').onclick = () => setTimeout(() => window.print(), 150);
   dibujar();
 }
