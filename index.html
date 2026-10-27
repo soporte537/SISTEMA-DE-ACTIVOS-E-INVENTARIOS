@@ -126,6 +126,49 @@
   .et .e2{font-family:var(--mono);font-weight:600;margin-top:1.2mm;letter-spacing:.3px;color:#13213A}
   .et .e3{font-size:6.5pt;color:#444;line-height:1.15;margin-top:.6mm;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 
+  /* Reportes */
+  .segmento{display:flex;gap:4px;background:var(--azul2);padding:4px;border-radius:10px;margin-bottom:14px;flex-wrap:wrap}
+  .segmento button{flex:1;border:0;background:none;padding:9px 12px;border-radius:8px;font-weight:700;color:var(--tinta2);cursor:pointer;white-space:nowrap}
+  .segmento button.on{background:#fff;color:var(--azul);box-shadow:0 1px 4px rgba(19,33,58,.15)}
+  .multi{border:1px solid var(--linea);border-radius:8px;padding:8px 10px;background:#fff;align-self:start}
+  .multi summary{cursor:pointer;font-weight:600;font-size:13px;color:var(--tinta2)}
+  .multi summary span{color:var(--azul);font-weight:700}
+  .multi .ops{max-height:200px;overflow:auto;margin-top:8px;display:grid;gap:5px}
+  .multi label{font-size:14px;display:flex;gap:6px;align-items:center}
+  .multi a{color:var(--azul);font-weight:600}
+  .colsRep{display:grid;grid-template-columns:repeat(4,1fr);gap:6px 12px}
+  .colsRep label{font-size:14px;display:flex;gap:6px;align-items:center}
+  .repVista{overflow:auto;padding:4px 0 20px}
+  .repMarco{background:#fff;padding:12mm 10mm 14mm;margin:0 auto;box-shadow:0 2px 14px rgba(19,33,58,.14);box-sizing:border-box;min-height:120mm}
+  .rep{color:#111;font-size:8.5pt;line-height:1.3;font-family:var(--sans)}
+  .rep table{width:100%;border-collapse:collapse;font-size:7.8pt;margin-bottom:3mm}
+  .rep thead{display:table-header-group}
+  .rep th{background:#13213A;color:#fff;font-weight:700;text-align:left;padding:1.6mm 1.4mm;font-size:7.2pt;text-transform:uppercase;letter-spacing:.2px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .rep td{padding:1.2mm 1.4mm;border-bottom:.2mm solid #D5DAE3;vertical-align:top}
+  .rep tr{break-inside:avoid;page-break-inside:avoid}
+  .rep .num{text-align:right;font-variant-numeric:tabular-nums}
+  .rep td.num,.rep .nw{white-space:nowrap}
+  .rep th{vertical-align:bottom}
+  .rep .mono{font-family:var(--mono);white-space:nowrap}
+  .rep .mut{color:#6E7480;font-size:.92em}
+  .rep .baja{color:#8A8F99}
+  .rep .alerta{color:#B3171D;font-size:.9em}
+  .rep .grupo td{background:#E7EBF3;font-weight:700;color:#13213A;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .rep .subt td{font-weight:700;border-top:.3mm solid #13213A;border-bottom:.5mm solid #13213A}
+  .rep .totalG td{background:#13213A;color:#fff;font-weight:800;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .repEnc{display:flex;justify-content:space-between;align-items:flex-start;gap:6mm;border-bottom:.8mm solid #E11B22;padding-bottom:3mm;margin-bottom:3.5mm;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .repEnc img{height:15mm;width:auto}
+  .repEnc h1{font-size:14pt;margin:0 0 1mm;color:#13213A;text-align:right;text-transform:uppercase;letter-spacing:.3px}
+  .repEnc .det{font-size:7.8pt;color:#3A4A66;text-align:right}
+  .repFiltros{font-size:7.5pt;color:#3A4A66;margin:0 0 3mm}
+  .itemK{margin-bottom:6mm}
+  .itemK.nueva+.itemK.nueva{break-before:page;page-break-before:always}
+  .itemTit{font-weight:700;color:#13213A;font-size:9.5pt;margin:0 0 1.5mm}
+  .firmas{display:grid;grid-template-columns:repeat(3,1fr);gap:14mm;margin-top:24mm;break-inside:avoid;page-break-inside:avoid}
+  .firmas div{border-top:.3mm solid #000;padding-top:1.5mm;text-align:center;font-size:8pt}
+  .repPie{font-size:7pt;color:#6E7480;margin-top:4mm}
+  .rep .vacio{padding:20mm 0}
+
   /* Etiquetas en rollo (impresora térmica) */
   .hojaEt.rollo{background:transparent;border:0;padding:0;max-width:none;display:flex;flex-direction:column;align-items:center;gap:5mm}
   .pagEt{display:grid;background:#fff;outline:1px dashed #AEB8CC;box-shadow:0 2px 10px rgba(19,33,58,.12);overflow:hidden;box-sizing:border-box}
@@ -140,7 +183,7 @@
   .etR .cR{font-family:var(--mono);font-weight:700;line-height:1.05;white-space:nowrap;color:#000}
   .etR .dR{line-height:1.12;color:#000;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
   .medidas{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-items:end}
-  @media (max-width:820px){ .medidas{grid-template-columns:1fr 1fr} }
+  @media (max-width:820px){ .medidas{grid-template-columns:1fr 1fr} .colsRep{grid-template-columns:1fr 1fr} }
 
   @media (max-width:820px){
     .kpis{grid-template-columns:repeat(2,1fr)}
@@ -156,7 +199,7 @@
     nav.tabs button{padding:12px 10px}
   }
   @media print{
-    body{background:#fff}
+    html,body{background:#fff!important}
     header.barra,nav.tabs,.aviso,.noImp{display:none!important}
     main{padding:0;margin:0;max-width:none}
     .hojaEt{border:0;padding:0;max-width:none;border-radius:0}
@@ -164,6 +207,8 @@
     .hojaEt.rollo{display:block;gap:0}
     .pagEt{box-shadow:none!important;outline:none!important;margin:0!important;break-after:page;page-break-after:always}
     .pagEt:last-child{break-after:auto;page-break-after:auto}
+    .repVista{overflow:visible;padding:0}
+    .repMarco{box-shadow:none!important;padding:0!important;width:auto!important;min-height:0;margin:0}
   }
 </style>
 <style id="estiloPagina">@page{size:letter;margin:8mm}</style>
@@ -179,6 +224,7 @@
 <nav class="tabs" id="tabs" hidden>
   <button data-t="activos" class="on">Activos fijos</button>
   <button data-t="inventario">Inventarios</button>
+  <button data-t="reportes">Reportes</button>
   <button data-t="escanear" class="escanear">Escanear QR</button>
 </nav>
 <main id="app"></main>
@@ -236,7 +282,8 @@ const REF_INICIAL = refDeParametros(new URLSearchParams(location.search));
 if (location.search) { try { history.replaceState(null, '', location.pathname); } catch(e){} }
 
 const S = { token:null, sesion:null, listas:null, activos:[], empresa:'', url:'', fechaCalculo:'', ufv:true,
-            sel:new Set(), f:{q:'', ubi:'', cat:'', est:'vigentes'}, inv:null, lector:null };
+            sel:new Set(), f:{q:'', ubi:'', cat:'', est:'vigentes'}, inv:null, lector:null,
+            fichas:{}, fotos:{}, vista:'', rep:null };
 const $ = (s, r=document) => r.querySelector(s);
 const app = $('#app');
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -271,7 +318,23 @@ async function srv(fn, ...args){
 }
 
 /** Toda pantalla nueva pasa por aquí: apaga la cámara si estaba encendida. */
-function pintar(html){ pararCamara(); tamPagina('@page{size:letter;margin:8mm}'); app.innerHTML = html; }
+function pintar(html){ pararCamara(); S.vista = ''; tamPagina('@page{size:letter;margin:8mm}'); app.innerHTML = html; }
+
+/* Fichas ya abiertas: se muestran al instante y se actualizan en segundo plano */
+function guardarFicha(a){
+  if (!a || !a.codigo) return;
+  S.fichas[a.codigo.toUpperCase()] = a;
+  if (a.token) S.fichas[a.token.toUpperCase()] = a;
+}
+/** Aplica la respuesta del servidor tras guardar, verificar o dar de baja, sin recargar toda la lista. */
+function aplicarRespuesta(r){
+  if (!r) return;
+  if (r.resumen){
+    const i = S.activos.findIndex(x => x.codigo === r.resumen.codigo);
+    if (i >= 0) S.activos[i] = r.resumen; else S.activos.push(r.resumen);
+  }
+  if (r.detalle) guardarFicha(r.detalle);
+}
 
 function aviso(msg, tipo){
   const a = $('#aviso'); a.textContent = msg; a.className = 'aviso ' + (tipo || ''); a.hidden = false;
@@ -313,12 +376,13 @@ function marcarTab(t){ document.querySelectorAll('#tabs button').forEach(b => b.
 document.querySelectorAll('#tabs button').forEach(b => b.onclick = () => {
   if (b.dataset.t === 'activos') verActivos();
   else if (b.dataset.t === 'inventario') verInventario();
+  else if (b.dataset.t === 'reportes') { S.rep = null; verReportes(); }
   else verEscaner();
 });
 
 function salir(silencioso){
   if (S.token && !silencioso) srv('cerrarSesion', S.token).catch(()=>{});
-  S.token = null; S.sesion = null; guardarToken(null);
+  S.token = null; S.sesion = null; S.fichas = {}; S.fotos = {}; S.rep = null; guardarToken(null);
   pintarCabecera(); verLogin();
 }
 
@@ -499,15 +563,41 @@ function pintarSel(){
 
 /* ------------------------------------------------------------- Ficha completa (ref = código o Token QR) */
 
-async function verFicha(ref){
+/**
+ * Abre la ficha. Si ya se abrió antes, se muestra al instante y se actualiza en segundo plano.
+ * datos: ficha ya recibida del servidor (tras guardar), se muestra sin volver a pedirla.
+ */
+async function verFicha(ref, datos){
   marcarTab('activos');
-  cargando('Abriendo la ficha…');
-  let a;
-  try { a = await srv('detalleActivo', S.token, ref); }
-  catch(err){
+  const previa = datos || S.fichas[String(ref || '').toUpperCase()];
+  if (previa){ pintarFicha(previa); if (datos) return; }
+  else cargando('Abriendo la ficha…');
+  try {
+    const a = await srv('detalleActivo', S.token, ref);
+    guardarFicha(a);
+    if (!previa) pintarFicha(a);
+    else if (S.vista === 'ficha:' + a.codigo && JSON.stringify(a) !== JSON.stringify(previa)) pintarFicha(a, true);
+  } catch(err){
+    if (previa) return;
     pintar(`<div class="panel vacio">${esc(err.message)}<div class="mt fila" style="justify-content:center"><button class="btn" id="bV">Volver a la lista</button><button class="btn osc" id="bE">Escanear otro</button></div></div>`);
-    $('#bV').onclick = verActivos; $('#bE').onclick = verEscaner; return;
+    $('#bV').onclick = verActivos; $('#bE').onclick = verEscaner;
   }
+}
+
+/** Foto aparte: la ficha aparece primero y la foto llega después. */
+async function cargarFoto(a){
+  const caja = $('#fotoF');
+  if (!caja) return;
+  if (!a.tieneFoto){ caja.textContent = 'Sin fotografía'; return; }
+  const ver = src => { const c = $('#fotoF'); if (c && S.vista === 'ficha:' + a.codigo) c.innerHTML = src ? `<img src="${src}" alt="Foto del activo">` : 'Sin fotografía'; };
+  if (S.fotos[a.codigo] !== undefined) return ver(S.fotos[a.codigo]);
+  caja.innerHTML = '<span class="spin"></span>';
+  try { S.fotos[a.codigo] = await srv('fotoActivo', S.token, a.codigo); ver(S.fotos[a.codigo]); }
+  catch(e){ ver(''); }
+}
+
+function pintarFicha(a, conservarPosicion){
+  const y = window.scrollY;
   const d = a.dep, baja = a.estado === 'Dado de baja';
   const pct = d.vidaMeses ? Math.round(d.meses / d.vidaMeses * 100) : 0;
   const ubis = S.listas.ubicaciones;
@@ -521,7 +611,7 @@ async function verFicha(ref){
     </div>
     <div class="ficha">
       <div>
-        <div class="foto">${a.foto ? `<img src="${a.foto}" alt="Foto del activo">` : 'Sin fotografía'}</div>
+        <div class="foto" id="fotoF">${a.tieneFoto ? '' : 'Sin fotografía'}</div>
         <div class="panel mt qrFicha">
           <div id="qrF"></div>
           <div><span class="cod" style="font-size:15px">${esc(a.codigo)}</span>
@@ -592,6 +682,9 @@ async function verFicha(ref){
       </div>
     </div>`);
 
+  S.vista = 'ficha:' + a.codigo;
+  if (conservarPosicion) window.scrollTo(0, y);
+  cargarFoto(a);
   $('#bVolver').onclick = verActivos;
   $('#bOtro').onclick = verEscaner;
   $('#bEtq').onclick = () => verEtiquetas([a.codigo]);
@@ -602,7 +695,7 @@ async function verFicha(ref){
   if ($('#bRegen')) $('#bRegen').onclick = async () => {
     if (!confirm('¿Generar un QR nuevo para ' + a.codigo + '?\n\nLa etiqueta impresa actual dejará de funcionar y tendrá que imprimir y pegar una nueva. Úselo solo si la etiqueta se perdió, se dañó o fue copiada.')) return;
     const b = $('#bRegen'); ocupado(b, true);
-    try { await srv('regenerarQR', S.token, a.codigo); aviso('QR nuevo generado. Imprima la etiqueta nueva.'); verFicha(a.codigo); }
+    try { const r = await srv('regenerarQR', S.token, a.codigo); aplicarRespuesta(r); aviso('QR nuevo generado. Imprima la etiqueta nueva.'); verFicha(a.codigo, r.detalle); }
     catch(err){ aviso(err.message, 'error'); ocupado(b, false); }
   };
   if ($('#bEditar')) $('#bEditar').onclick = () => verFormActivo(a);
@@ -610,14 +703,15 @@ async function verFicha(ref){
     const b = $('#bVer'); ocupado(b, true);
     try {
       const r = await srv('verificarActivo', S.token, a.codigo, $('#vUbi').value, $('#vObs').value);
+      aplicarRespuesta(r);
       aviso(r.coincide === 'Sí' ? 'Verificación registrada: el activo está en su ubicación.' : 'Verificación registrada con diferencia de ubicación.', r.coincide === 'Sí' ? '' : 'error');
-      verFicha(a.codigo);
+      verFicha(a.codigo, r.detalle);
     } catch(err){ aviso(err.message, 'error'); ocupado(b, false); }
   };
   if ($('#bBaja')) $('#bBaja').onclick = async () => {
     if (!confirm('¿Dar de baja el activo ' + a.codigo + '? Dejará de depreciarse y no podrá editarse.')) return;
     const b = $('#bBaja'); ocupado(b, true);
-    try { await srv('darDeBaja', S.token, a.codigo, $('#bjF').value, $('#bjM').value); aviso('Activo dado de baja.'); await cargarDatos(); verFicha(a.codigo); }
+    try { const r = await srv('darDeBaja', S.token, a.codigo, $('#bjF').value, $('#bjM').value); aplicarRespuesta(r); aviso('Activo dado de baja.'); verFicha(a.codigo, r.detalle); }
     catch(err){ aviso(err.message, 'error'); ocupado(b, false); }
   };
 }
@@ -700,9 +794,10 @@ function verFormActivo(a){
     };
     try {
       const r = await srv('guardarActivo', S.token, d, foto ? foto.split(',')[1] : null);
+      if (foto) delete S.fotos[r.codigo];
+      aplicarRespuesta(r);
       aviso(nuevo ? 'Activo registrado con el código ' + r.codigo + '.' : 'Cambios guardados.');
-      await cargarDatos();
-      verFicha(r.codigo);
+      verFicha(r.codigo, r.detalle);
     } catch(err){ aviso(err.message, 'error'); ocupado(b, false); }
   };
 }
@@ -850,6 +945,390 @@ async function verEtiquetas(codigos){
   $('#eLogo').onchange = e => { P.logo = e.target.checked; dibujar(); };
   $('#eVolver').onclick = () => { tamPagina('@page{size:letter;margin:8mm}'); codigos.length === 1 ? verFicha(codigos[0]) : verActivos(); };
   $('#eImp').onclick = () => setTimeout(() => window.print(), 150);
+  dibujar();
+}
+
+/* ------------------------------------------------------------- Reportes en PDF (tamaño carta) */
+
+const COLS_ACT = [
+  { k:'codigo',      t:'Código' },
+  { k:'descripcion', t:'Descripción' },
+  { k:'categoria',   t:'Categoría' },
+  { k:'marcaModelo', t:'Marca / modelo' },
+  { k:'serie',       t:'N° de serie' },
+  { k:'ubicacion',   t:'Ubicación' },
+  { k:'responsable', t:'Responsable' },
+  { k:'cliente',     t:'Cliente (comodato)' },
+  { k:'estado',      t:'Estado' },
+  { k:'fechaAdq',    t:'Fecha de adquisición' },
+  { k:'vida',        t:'Vida útil' },
+  { k:'costo',       t:'Costo de adquisición', num:true, suma:true },
+  { k:'factor',      t:'Factor UFV', num:true },
+  { k:'costoAct',    t:'Costo actualizado', num:true, suma:true },
+  { k:'depGestion',  t:'Dep. de la gestión', num:true, suma:true },
+  { k:'depAcum',     t:'Dep. acumulada', num:true, suma:true },
+  { k:'valorLibros', t:'Valor en libros', num:true, suma:true }
+];
+const PRESETS_ACT = {
+  'Valor en libros':       ['codigo','descripcion','categoria','ubicacion','fechaAdq','valorLibros'],
+  'Costo y depreciación':  ['codigo','descripcion','ubicacion','fechaAdq','costo','depAcum','valorLibros'],
+  'Completo contable':     ['codigo','descripcion','categoria','fechaAdq','vida','costo','factor','costoAct','depGestion','depAcum','valorLibros'],
+  'Inventario físico':     ['codigo','descripcion','marcaModelo','serie','ubicacion','responsable','estado']
+};
+const AGRUPAR = { '':'Sin agrupar', ubicacion:'Ubicación', categoria:'Categoría', responsable:'Responsable', estado:'Estado' };
+const ESTADOS_ACT = ['Operativo', 'En mantenimiento', 'En desuso', 'Dado de baja'];
+const REP_DEF = {
+  tipo:'activos',
+  act:{ titulo:'Reporte de activos fijos', cols:PRESETS_ACT['Costo y depreciación'], grupo:'ubicacion', orient:'auto', firmas:true, soloTotales:false },
+  kar:{ orient:'horizontal', soloCon:true, nuevaPag:false, firmas:false },
+  exi:{ orient:'auto', soloStock:false, valores:true, firmas:false }
+};
+function leerPrefRep(){
+  try {
+    const g = JSON.parse(localStorage.getItem('ca_rep') || '{}');
+    return { tipo: g.tipo || REP_DEF.tipo, act: Object.assign({}, REP_DEF.act, g.act), kar: Object.assign({}, REP_DEF.kar, g.kar), exi: Object.assign({}, REP_DEF.exi, g.exi) };
+  } catch(e){ return JSON.parse(JSON.stringify(REP_DEF)); }
+}
+function guardarPrefRep(p){ try { localStorage.setItem('ca_rep', JSON.stringify(p)); } catch(e){} }
+
+/* Lista de casillas desplegable para filtrar */
+function multi(id, titulo, opciones, marcadas){
+  const set = new Set(marcadas);
+  return `<details class="multi"><summary>${esc(titulo)}: <span id="${id}Res"></span></summary>
+    <div class="fila" style="gap:10px;margin-top:6px;font-size:13px"><a href="#" data-todas="${id}">Todas</a><a href="#" data-ninguna="${id}">Ninguna</a></div>
+    <div class="ops">${opciones.map(o => `<label><input type="checkbox" data-g="${id}" value="${esc(o.v)}" ${set.has(o.v) ? 'checked' : ''}> ${esc(o.t)}</label>`).join('')}</div></details>`;
+}
+function leerMulti(id){ return [...document.querySelectorAll(`input[data-g="${id}"]:checked`)].map(i => i.value); }
+function resumenMulti(id, total, plural){
+  const n = leerMulti(id).length, el = $('#' + id + 'Res');
+  if (el) el.textContent = n === total ? 'todas' : n === 0 ? 'ninguna' : n + ' de ' + total;
+}
+function enlazarMulti(alCambiar){
+  document.querySelectorAll('[data-todas],[data-ninguna]').forEach(a => a.onclick = e => {
+    e.preventDefault();
+    const g = a.dataset.todas || a.dataset.ninguna, v = !!a.dataset.todas;
+    document.querySelectorAll(`input[data-g="${g}"]`).forEach(i => i.checked = v);
+    alCambiar();
+  });
+  document.querySelectorAll('input[data-g]').forEach(i => i.onchange = alCambiar);
+}
+function textoFiltro(nombre, sel, total, etiqueta){
+  if (sel.length === total) return '';
+  if (!sel.length) return nombre + ': ninguna';
+  return nombre + ': ' + sel.map(v => etiqueta ? etiqueta(v) : v).join(', ');
+}
+
+function paginaReporte(orient){
+  tamPagina(`@page{size:letter ${orient === 'horizontal' ? 'landscape' : 'portrait'};margin:12mm 10mm 14mm 10mm;` +
+    `@bottom-right{content:"Página " counter(page) " de " counter(pages);font:7.5pt Montserrat,Arial,sans-serif;color:#6E7480}}`);
+  const marco = $('#repMarco');
+  if (marco) marco.style.width = orient === 'horizontal' ? '279.4mm' : '215.9mm';
+}
+function encabezadoRep(titulo, lineas, empresa){
+  return `<div class="repEnc">
+    ${LOGO ? `<img src="${LOGO}" alt="">` : `<b>${esc(empresa)}</b>`}
+    <div><h1>${esc(titulo)}</h1>${lineas.filter(Boolean).map(l => `<div class="det">${l}</div>`).join('')}</div>
+  </div>`;
+}
+function pieRep(usuario, extra){
+  const d = new Date();
+  const f = String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + d.getFullYear() + ' ' + String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+  return `<div class="repPie">Generado el ${f} por ${esc(usuario || '')}${extra ? ' · ' + esc(extra) : ''} · ${esc(EMPRESA)}</div>`;
+}
+const firmasRep = () => `<div class="firmas"><div>Elaborado por</div><div>Revisado por</div><div>Aprobado por</div></div>`;
+
+async function verReportes(tipo){
+  if (!S.sesion) return verLogin(verReportes);
+  marcarTab('reportes');
+  const P = leerPrefRep();
+  if (tipo) P.tipo = tipo;
+  guardarPrefRep(P);
+  pintar(`
+    <div class="entre noImp">
+      <div><h1>Reportes</h1><div class="muted">Elija el reporte, ajuste los filtros y genere el PDF en tamaño carta.</div></div>
+      <div class="fila"><button class="btn pri" id="rImp">Imprimir / guardar PDF</button></div>
+    </div>
+    <div class="segmento noImp">
+      <button data-r="activos" class="${P.tipo === 'activos' ? 'on' : ''}">Activos fijos</button>
+      <button data-r="kardex" class="${P.tipo === 'kardex' ? 'on' : ''}">Kárdex de inventario</button>
+      <button data-r="existencias" class="${P.tipo === 'existencias' ? 'on' : ''}">Existencias</button>
+    </div>
+    <div class="panel noImp" id="repOpc"><div class="cargando"><span class="spin"></span>Cargando datos…</div></div>
+    <div class="nota ok noImp" style="margin:12px 0;font-size:13px">Al pulsar <b>Imprimir / guardar PDF</b> se abre la ventana de impresión. Para obtener el archivo elija <b>Destino: Guardar como PDF</b>; para papel, elija su impresora. Desactive <b>Encabezados y pies de página</b> y deje la <b>escala en 100 %</b>.</div>
+    <div class="repVista" id="repVista"><div class="repMarco" id="repMarco"><div class="rep" id="reporte"></div></div></div>`);
+  document.querySelectorAll('.segmento button').forEach(b => b.onclick = () => verReportes(b.dataset.r));
+  $('#rImp').onclick = () => setTimeout(() => window.print(), 150);
+  try {
+    if (P.tipo === 'activos') await repActivos(P);
+    else if (P.tipo === 'kardex') await repKardex(P);
+    else await repExistencias(P);
+  } catch(err){
+    if ($('#repOpc')) $('#repOpc').innerHTML = `<div class="vacio">${esc(err.message)}</div>`;
+  }
+}
+
+/* ---------- Reporte de activos fijos ---------- */
+
+async function repActivos(P){
+  const O = P.act;
+  const cargar = async fecha => {
+    const clave = 'act|' + (fecha || '');
+    if (!S.rep || S.rep.clave !== clave) S.rep = { clave, datos: await srv('reporteActivos', S.token, fecha || '') };
+    return S.rep.datos;
+  };
+  let D = await cargar(O.fechaCorte || '');
+  const unicos = (k, base) => [...new Set((base || []).concat(D.activos.map(a => a[k] || '')))];
+  const ubis = unicos('ubicacion', D.listas.ubicaciones);
+  const resps = unicos('responsable', D.listas.responsables);
+  const cats = unicos('categoria', D.listas.categorias.map(c => c.nombre));
+  const sinAsignar = v => v || '(Sin asignar)';
+  $('#repOpc').innerHTML = `
+    <div class="medidas">
+      <label class="campo" style="grid-column:span 2">Título<input type="text" id="raTit" value="${esc(O.titulo)}"></label>
+      <label class="campo">Fecha de corte<input type="date" id="raFec" value="${esc(D.fechaCorte)}" max="${hoyISO()}"></label>
+      <label class="campo">Orientación<select id="raOri">
+        <option value="auto">Automática</option><option value="vertical">Vertical</option><option value="horizontal">Horizontal</option></select></label>
+    </div>
+    <h2 class="mt">Qué activos incluir</h2>
+    <div class="medidas">
+      ${multi('fUbi', 'Ubicaciones', ubis.map(v => ({ v, t: sinAsignar(v) })), ubis)}
+      ${multi('fRes', 'Responsables', resps.map(v => ({ v, t: sinAsignar(v) })), resps)}
+      ${multi('fCat', 'Categorías', cats.map(v => ({ v, t: sinAsignar(v) })), cats)}
+      ${multi('fEst', 'Estados', ESTADOS_ACT.map(v => ({ v, t: v })), ESTADOS_ACT.filter(e => e !== 'Dado de baja'))}
+    </div>
+    <h2 class="mt">Columnas</h2>
+    <div class="fila" style="gap:8px;margin-bottom:10px">${Object.keys(PRESETS_ACT).map(k => `<button type="button" class="btn" data-preset="${esc(k)}" style="padding:6px 10px;font-size:13px">${esc(k)}</button>`).join('')}</div>
+    <div class="colsRep">${COLS_ACT.map(c => `<label><input type="checkbox" data-col="${c.k}" ${O.cols.includes(c.k) ? 'checked' : ''}> ${esc(c.t)}</label>`).join('')}</div>
+    <h2 class="mt">Presentación</h2>
+    <div class="medidas">
+      <label class="campo">Agrupar por<select id="raGru">${Object.entries(AGRUPAR).map(([k, v]) => `<option value="${k}" ${k === O.grupo ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
+      <label class="fila" style="gap:6px;font-size:14px"><input type="checkbox" id="raTot" ${O.soloTotales ? 'checked' : ''}> Solo totales por grupo</label>
+      <label class="fila" style="gap:6px;font-size:14px"><input type="checkbox" id="raFir" ${O.firmas ? 'checked' : ''}> Espacio para firmas</label>
+    </div>`;
+  $('#raOri').value = O.orient;
+
+  const dibujar = () => {
+    O.titulo = $('#raTit').value.trim() || REP_DEF.act.titulo;
+    O.orient = $('#raOri').value;
+    O.grupo = $('#raGru').value;
+    O.soloTotales = $('#raTot').checked && !!O.grupo;
+    $('#raTot').disabled = !O.grupo;
+    O.firmas = $('#raFir').checked;
+    O.cols = COLS_ACT.filter(c => $(`input[data-col="${c.k}"]`).checked).map(c => c.k);
+    guardarPrefRep(P);
+    resumenMulti('fUbi', ubis.length); resumenMulti('fRes', resps.length); resumenMulti('fCat', cats.length); resumenMulti('fEst', ESTADOS_ACT.length);
+    const sel = { u: new Set(leerMulti('fUbi')), r: new Set(leerMulti('fRes')), c: new Set(leerMulti('fCat')), e: new Set(leerMulti('fEst')) };
+    const filas = D.activos.filter(a => sel.u.has(a.ubicacion || '') && sel.r.has(a.responsable || '') && sel.c.has(a.categoria || '') && sel.e.has(a.estado))
+      .sort((x, y) => (O.grupo ? sinAsignar(x[O.grupo]).localeCompare(sinAsignar(y[O.grupo])) : 0) || x.codigo.localeCompare(y.codigo));
+    const cols = COLS_ACT.filter(c => O.cols.includes(c.k));
+    const orient = O.orient !== 'auto' ? O.orient : (cols.length > 7 || cols.filter(c => c.num).length >= 4 ? 'horizontal' : 'vertical');
+    paginaReporte(orient);
+
+    const valor = (a, k) => {
+      switch (k){
+        case 'marcaModelo': return esc([a.marca, a.modelo].filter(Boolean).join(' ') || '—');
+        case 'fechaAdq': return fecha(a.fechaAdq);
+        case 'estado': return esc(a.estado) + (a.fechaBaja ? `<br><span class="mut">${fecha(a.fechaBaja)}</span>` : '');
+        case 'vida': return a.vidaMeses ? `${a.vida} años <span class="mut">(${a.meses}/${a.vidaMeses} m)</span>` : 'No aplica';
+        case 'factor': return Number(a.factor || 1).toFixed(5);
+        case 'responsable': case 'ubicacion': case 'categoria': return esc(a[k] || '—');
+        case 'descripcion': return esc(a.descripcion || '—');
+        default: return COLS_ACT.find(c => c.k === k).num ? nf.format(a[k] || 0) : esc(a[k] || '—');
+      }
+    };
+    const sumables = cols.filter(c => c.suma);
+    const sumar = lista => { const t = {}; sumables.forEach(c => t[c.k] = lista.filter(a => a.estado !== 'Dado de baja').reduce((s, a) => s + (Number(a[c.k]) || 0), 0)); return t; };
+    const filaTotal = (clase, etiqueta, lista) => {
+      const t = sumar(lista);
+      const iPrimeraNum = cols.findIndex(c => c.num);
+      const span = iPrimeraNum < 0 ? cols.length : iPrimeraNum;
+      return `<tr class="${clase}"><td colspan="${span}">${etiqueta}</td>${cols.slice(span).map(c => `<td class="num">${c.suma ? nf.format(t[c.k]) : ''}</td>`).join('')}</tr>`;
+    };
+
+    let cuerpo = '';
+    const grupos = [];
+    if (O.grupo){
+      filas.forEach(a => { const g = sinAsignar(a[O.grupo]); let G = grupos.find(x => x.g === g); if (!G) grupos.push(G = { g, l: [] }); G.l.push(a); });
+    }
+    if (O.soloTotales){
+      cuerpo = `<table><thead><tr><th>${esc(AGRUPAR[O.grupo])}</th><th class="num">Cantidad</th>${sumables.map(c => `<th class="num">${esc(c.t)}</th>`).join('')}</tr></thead><tbody>
+        ${grupos.map(G => { const t = sumar(G.l); return `<tr><td>${esc(G.g)}</td><td class="num">${G.l.length}</td>${sumables.map(c => `<td class="num">${nf.format(t[c.k])}</td>`).join('')}</tr>`; }).join('')}
+        ${(() => { const t = sumar(filas); return `<tr class="totalG"><td>TOTAL GENERAL</td><td class="num">${filas.length}</td>${sumables.map(c => `<td class="num">${nf.format(t[c.k])}</td>`).join('')}</tr>`; })()}
+      </tbody></table>`;
+    } else {
+      const NW = ['codigo', 'fechaAdq', 'vida', 'serie'];
+      const filaHTML = a => `<tr>${cols.map(c => `<td class="${c.num ? 'num' : ''}${NW.includes(c.k) ? ' nw' : ''}${a.estado === 'Dado de baja' ? ' baja' : ''}">${valor(a, c.k)}</td>`).join('')}</tr>`;
+      cuerpo = `<table><thead><tr>${cols.map(c => `<th class="${c.num ? 'num' : ''}">${esc(c.t)}</th>`).join('')}</tr></thead><tbody>
+        ${O.grupo
+          ? grupos.map(G => `<tr class="grupo"><td colspan="${cols.length}">${esc(AGRUPAR[O.grupo])}: ${esc(G.g)} <span class="mut">(${G.l.length} ${G.l.length === 1 ? 'activo' : 'activos'})</span></td></tr>
+              ${G.l.map(filaHTML).join('')}${sumables.length ? filaTotal('subt', 'Subtotal ' + esc(G.g), G.l) : ''}`).join('')
+          : filas.map(filaHTML).join('')}
+        ${sumables.length ? filaTotal('totalG', 'TOTAL GENERAL', filas) : ''}
+      </tbody></table>`;
+    }
+    const hayBajas = filas.some(a => a.estado === 'Dado de baja');
+    const filtros = [
+      textoFiltro('Ubicaciones', [...sel.u], ubis.length, sinAsignar),
+      textoFiltro('Responsables', [...sel.r], resps.length, sinAsignar),
+      textoFiltro('Categorías', [...sel.c], cats.length, sinAsignar),
+      sel.e.size === 3 && !sel.e.has('Dado de baja') ? 'Solo activos vigentes' : textoFiltro('Estados', [...sel.e], ESTADOS_ACT.length)
+    ].filter(Boolean).join(' · ');
+    const ufvTxt = D.ufv ? (D.ufvCorte ? `Actualizado por UFV (${D.ufvCorte.valor.toFixed(5)} del ${fecha(D.ufvCorte.fecha)})` : 'Actualización por UFV: falta registrar la UFV') : 'Sin actualización por UFV';
+    $('#reporte').innerHTML = encabezadoRep(O.titulo, [
+      `<b>${esc(D.empresa)}</b>`,
+      `Al ${fecha(D.fechaCorte)} · ${ufvTxt}`,
+      `Depreciación en línea recta · inicio: ${D.inicioSiguiente ? 'mes siguiente a la adquisición' : 'mes de adquisición'} · cierre de gestión: mes ${D.mesCierre}`
+    ], D.empresa) +
+      (filtros ? `<div class="repFiltros"><b>Filtros:</b> ${esc(filtros)}</div>` : '') +
+      (filas.length ? cuerpo : '<div class="vacio">Ningún activo cumple los filtros elegidos.</div>') +
+      (hayBajas && sumables.length ? '<div class="repFiltros" style="margin-top:2mm">Los totales excluyen los activos dados de baja.</div>' : '') +
+      (O.firmas ? firmasRep() : '') +
+      pieRep(D.usuario, filas.length + (filas.length === 1 ? ' activo' : ' activos'));
+  };
+
+  ['raTit', 'raOri', 'raGru', 'raTot', 'raFir'].forEach(id => $('#' + id).addEventListener(id === 'raTit' ? 'input' : 'change', dibujar));
+  document.querySelectorAll('input[data-col]').forEach(i => i.onchange = dibujar);
+  document.querySelectorAll('[data-preset]').forEach(b => b.onclick = () => {
+    const l = PRESETS_ACT[b.dataset.preset];
+    document.querySelectorAll('input[data-col]').forEach(i => i.checked = l.includes(i.dataset.col));
+    dibujar();
+  });
+  enlazarMulti(dibujar);
+  $('#raFec').onchange = async e => {
+    const f = e.target.value;
+    $('#reporte').innerHTML = '<div class="cargando"><span class="spin"></span>Calculando al ' + fecha(f) + '…</div>';
+    try { D = await cargar(f); O.fechaCorte = f; dibujar(); } catch(err){ aviso(err.message, 'error'); }
+  };
+  dibujar();
+}
+
+/* ---------- Kárdex de inventario ---------- */
+
+async function repKardex(P){
+  const O = P.kar;
+  if (!S.rep || S.rep.clave !== 'kar') S.rep = { clave:'kar', datos: await srv('reporteKardex', S.token) };
+  const D = S.rep.datos;
+  const hoy = hoyISO();
+  const iniAnio = hoy.slice(0, 4) + '-01-01';
+  $('#repOpc').innerHTML = `
+    <div class="medidas">
+      <label class="campo">Desde<input type="date" id="rkDes" value="${O.desde || iniAnio}" max="${hoy}"></label>
+      <label class="campo">Hasta<input type="date" id="rkHas" value="${O.hasta && O.hasta <= hoy ? O.hasta : hoy}" max="${hoy}"></label>
+      <label class="campo">Orientación<select id="rkOri"><option value="horizontal">Horizontal</option><option value="vertical">Vertical</option></select></label>
+      ${multi('fIt', 'Ítems', D.items.map(i => ({ v: i.codigo, t: i.codigo + ' · ' + i.descripcion })), D.items.map(i => i.codigo))}
+    </div>
+    <div class="medidas mt">
+      <label class="fila" style="gap:6px;font-size:14px"><input type="checkbox" id="rkCon" ${O.soloCon ? 'checked' : ''}> Solo ítems con movimientos en el periodo</label>
+      <label class="fila" style="gap:6px;font-size:14px"><input type="checkbox" id="rkPag" ${O.nuevaPag ? 'checked' : ''}> Cada ítem en una página nueva</label>
+      <label class="fila" style="gap:6px;font-size:14px"><input type="checkbox" id="rkFir" ${O.firmas ? 'checked' : ''}> Espacio para firmas</label>
+    </div>`;
+  $('#rkOri').value = O.orient;
+  const dibujar = () => {
+    O.desde = $('#rkDes').value || iniAnio; O.hasta = $('#rkHas').value || hoy;
+    O.orient = $('#rkOri').value; O.soloCon = $('#rkCon').checked; O.nuevaPag = $('#rkPag').checked; O.firmas = $('#rkFir').checked;
+    guardarPrefRep(P);
+    resumenMulti('fIt', D.items.length);
+    paginaReporte(O.orient);
+    const sel = new Set(leerMulti('fIt'));
+    const entra = t => t === 'Entrada' || t === 'Ajuste positivo';
+    const sale = t => t === 'Salida' || t === 'Ajuste negativo';
+    const resumen = [];
+    const bloques = D.items.filter(i => sel.has(i.codigo)).map(i => {
+      const todos = D.movs.filter(m => m.codigo === i.codigo);
+      const previos = todos.filter(m => m.fecha && m.fecha < O.desde);
+      const ult = previos[previos.length - 1];
+      const ini = { cant: ult ? ult.saldoCant || 0 : 0, valor: ult ? ult.saldoValor || 0 : 0 };
+      const per = todos.filter(m => m.fecha >= O.desde && m.fecha <= O.hasta);
+      if (O.soloCon && !per.length) return '';
+      let eC = 0, eV = 0, sC = 0, sV = 0;
+      const filas = per.map(m => {
+        const e = entra(m.tipo), sa = sale(m.tipo);
+        if (e){ eC += m.cantidad; eV += m.importe || 0; }
+        if (sa){ sC += m.cantidad; sV += m.importe || 0; }
+        return `<tr>
+          <td>${fecha(m.fecha)}</td><td class="mono">${esc(m.numero)}</td><td>${esc(m.tipo)}</td>
+          <td>${esc(m.documento || m.motivo || '')}${m.alerta ? `<br><span class="alerta">${esc(m.alerta)}</span>` : ''}</td>
+          <td>${esc(m.ubicacion)}${m.destino ? ' → ' + esc(m.destino) : ''}</td>
+          <td class="num">${e ? nq.format(m.cantidad) : ''}</td><td class="num">${sa ? nq.format(m.cantidad) : ''}</td>
+          <td class="num">${m.tipo === 'Traspaso' ? '' : nf.format(m.cuAplicado || 0)}</td>
+          <td class="num">${e ? nf.format(m.importe || 0) : ''}</td><td class="num">${sa ? nf.format(m.importe || 0) : ''}</td>
+          <td class="num">${nq.format(m.saldoCant || 0)}</td><td class="num">${nf.format(m.saldoValor || 0)}</td></tr>`;
+      }).join('');
+      const fin = per.length ? { cant: per[per.length - 1].saldoCant || 0, valor: per[per.length - 1].saldoValor || 0 } : ini;
+      resumen.push({ i, ini, eC, sC, fin });
+      return `<div class="itemK ${O.nuevaPag ? 'nueva' : ''}">
+        <div class="itemTit"><span class="mono">${esc(i.codigo)}</span> · ${esc(i.descripcion)} <span class="mut">· ${esc(i.categoria || 'Sin categoría')} · unidad: ${esc(i.unidad || '—')}</span></div>
+        <table><thead><tr><th>Fecha</th><th>N°</th><th>Tipo</th><th>Documento / motivo</th><th>Ubicación</th>
+          <th class="num">Entrada</th><th class="num">Salida</th><th class="num">C. unitario</th><th class="num">Entrada Bs</th><th class="num">Salida Bs</th><th class="num">Saldo</th><th class="num">Saldo Bs</th></tr></thead>
+        <tbody>
+          <tr class="grupo"><td colspan="10">Saldo inicial al ${fecha(O.desde)}</td><td class="num">${nq.format(ini.cant)}</td><td class="num">${nf.format(ini.valor)}</td></tr>
+          ${filas || '<tr><td colspan="12" class="mut">Sin movimientos en el periodo.</td></tr>'}
+          <tr class="totalG"><td colspan="5">Totales del periodo y saldo final</td><td class="num">${nq.format(eC)}</td><td class="num">${nq.format(sC)}</td><td></td>
+            <td class="num">${nf.format(eV)}</td><td class="num">${nf.format(sV)}</td><td class="num">${nq.format(fin.cant)}</td><td class="num">${nf.format(fin.valor)}</td></tr>
+        </tbody></table></div>`;
+    }).filter(Boolean);
+    const tablaResumen = resumen.length > 1 ? `<div class="itemK ${O.nuevaPag ? 'nueva' : ''}"><div class="itemTit">Resumen del periodo</div>
+      <table><thead><tr><th>Código</th><th>Descripción</th><th>Unidad</th><th class="num">Saldo inicial</th><th class="num">Entradas</th><th class="num">Salidas</th><th class="num">Saldo final</th><th class="num">Valor final Bs</th></tr></thead><tbody>
+      ${resumen.map(r => `<tr><td class="mono">${esc(r.i.codigo)}</td><td>${esc(r.i.descripcion)}</td><td>${esc(r.i.unidad)}</td><td class="num">${nq.format(r.ini.cant)}</td><td class="num">${nq.format(r.eC)}</td><td class="num">${nq.format(r.sC)}</td><td class="num">${nq.format(r.fin.cant)}</td><td class="num">${nf.format(r.fin.valor)}</td></tr>`).join('')}
+      <tr class="totalG"><td colspan="7">VALOR TOTAL AL ${fecha(O.hasta)}</td><td class="num">${nf.format(resumen.reduce((s, r) => s + r.fin.valor, 0))}</td></tr></tbody></table></div>` : '';
+    $('#reporte').innerHTML = encabezadoRep('Kárdex físico valorado', [
+      `<b>${esc(D.empresa)}</b>`, `Del ${fecha(O.desde)} al ${fecha(O.hasta)} · Valuación por promedio ponderado`
+    ], D.empresa) +
+      (bloques.length ? bloques.join('') + tablaResumen : '<div class="vacio">No hay ítems con movimientos para los filtros elegidos.</div>') +
+      (O.firmas ? firmasRep() : '') + pieRep(D.usuario, bloques.length + (bloques.length === 1 ? ' ítem' : ' ítems'));
+  };
+  ['rkDes', 'rkHas', 'rkOri', 'rkCon', 'rkPag', 'rkFir'].forEach(id => $('#' + id).onchange = dibujar);
+  enlazarMulti(dibujar);
+  dibujar();
+}
+
+/* ---------- Existencias de inventario ---------- */
+
+async function repExistencias(P){
+  const O = P.exi;
+  if (!S.rep || S.rep.clave !== 'exi') S.rep = { clave:'exi', datos: await srv('inventario', S.token) };
+  const D = S.rep.datos;
+  const ubis = D.listas.ubicaciones.filter(u => u !== D.listas.comodato);
+  const cats = [...new Set(D.listas.catInventario.concat(D.items.map(i => i.categoria || '')))];
+  const sinCat = v => v || '(Sin categoría)';
+  $('#repOpc').innerHTML = `
+    <div class="medidas">
+      ${multi('fCi', 'Categorías', cats.map(v => ({ v, t: sinCat(v) })), cats)}
+      ${multi('fUi', 'Ubicaciones (columnas)', ubis.map(v => ({ v, t: v })), ubis)}
+      <label class="campo">Orientación<select id="reOri"><option value="auto">Automática</option><option value="vertical">Vertical</option><option value="horizontal">Horizontal</option></select></label>
+    </div>
+    <div class="medidas mt">
+      <label class="fila" style="gap:6px;font-size:14px"><input type="checkbox" id="reSto" ${O.soloStock ? 'checked' : ''}> Solo ítems con stock</label>
+      <label class="fila" style="gap:6px;font-size:14px"><input type="checkbox" id="reVal" ${O.valores ? 'checked' : ''}> Mostrar costo y valor</label>
+      <label class="fila" style="gap:6px;font-size:14px"><input type="checkbox" id="reFir" ${O.firmas ? 'checked' : ''}> Espacio para firmas</label>
+    </div>`;
+  $('#reOri').value = O.orient;
+  const dibujar = () => {
+    O.orient = $('#reOri').value; O.soloStock = $('#reSto').checked; O.valores = $('#reVal').checked; O.firmas = $('#reFir').checked;
+    guardarPrefRep(P);
+    resumenMulti('fCi', cats.length); resumenMulti('fUi', ubis.length);
+    const sc = new Set(leerMulti('fCi')), su = ubis.filter(u => leerMulti('fUi').includes(u));
+    const items = D.items.filter(i => sc.has(i.categoria || '') && (!O.soloStock || i.stock > 0));
+    const nCols = 6 + su.length + (O.valores ? 2 : 0);
+    const orient = O.orient !== 'auto' ? O.orient : (nCols > 8 ? 'horizontal' : 'vertical');
+    paginaReporte(orient);
+    const total = items.reduce((s, i) => s + i.valor, 0);
+    $('#reporte').innerHTML = encabezadoRep('Existencias de inventario', [
+      `<b>${esc(EMPRESA)}</b>`, `Al ${fecha(hoyISO())} · Valuación por promedio ponderado`
+    ], EMPRESA) +
+      ([textoFiltro('Categorías', [...sc], cats.length, sinCat)].filter(Boolean).map(f => `<div class="repFiltros"><b>Filtros:</b> ${esc(f)}</div>`).join('')) +
+      (items.length ? `<table><thead><tr><th>Código</th><th>Descripción</th><th>Unidad</th>${su.map(u => `<th class="num">${esc(u)}</th>`).join('')}
+        <th class="num">Stock total</th><th class="num">Mínimo</th><th>Situación</th>${O.valores ? '<th class="num">Costo prom.</th><th class="num">Valor Bs</th>' : ''}</tr></thead><tbody>
+        ${items.map(i => `<tr><td class="mono">${esc(i.codigo)}</td><td>${esc(i.descripcion)}<br><span class="mut">${esc(sinCat(i.categoria))}</span></td><td>${esc(i.unidad)}</td>
+          ${su.map(u => `<td class="num">${nq.format(i.porUbicacion[u] || 0)}</td>`).join('')}
+          <td class="num"><b>${nq.format(i.stock)}</b></td><td class="num">${i.stockMin ? nq.format(i.stockMin) : '—'}</td><td>${esc(i.situacion)}</td>
+          ${O.valores ? `<td class="num">${nf.format(i.prom)}</td><td class="num">${nf.format(i.valor)}</td>` : ''}</tr>`).join('')}
+        ${O.valores ? `<tr class="totalG"><td colspan="${nCols - 1}">VALOR TOTAL DEL INVENTARIO</td><td class="num">${nf.format(total)}</td></tr>` : ''}
+        </tbody></table>` : '<div class="vacio">Ningún ítem cumple los filtros elegidos.</div>') +
+      (O.firmas ? firmasRep() : '') + pieRep(S.sesion && S.sesion.nombre, items.length + (items.length === 1 ? ' ítem' : ' ítems'));
+  };
+  ['reOri', 'reSto', 'reVal', 'reFir'].forEach(id => $('#' + id).onchange = dibujar);
+  enlazarMulti(dibujar);
   dibujar();
 }
 
